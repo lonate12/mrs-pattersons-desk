@@ -37,3 +37,8 @@ out/
 .vscode/
 
 application-dev.properties
+
+.DS_Store
+data/pg/
+src/.DS_Store
+src/main/.DS_Store
