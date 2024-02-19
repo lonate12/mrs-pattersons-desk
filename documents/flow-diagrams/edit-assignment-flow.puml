@@ -1,0 +1,29 @@
+@startuml
+actor Student
+participant AssignmentController
+participant AssignmentService
+participant AssignmentRepository
+database PostgreSQL
+
+Student -> AssignmentController: PUT "/assignments/{assignmentId}"
+AssignmentController -> AssignmentService: updateAssignment(assignmentId)
+AssignmentService -> AssignmentRepository: updateAssignment(assignmentId)
+AssignmentRepository -> PostgreSQL: findById(assignmentId)
+
+alt No reference found for ID
+PostgreSQL --> AssignmentRepository: null
+AssignmentRepository --> AssignmentService: EntityNotFoundException
+AssignmentService --> AssignmentController: EntityNotFoundException
+AssignmentController --> Student: 404 Not Found
+end
+
+PostgreSQL --> AssignmentRepository: Assignment record
+AssignmentRepository --> AssignmentService: Assignment entity
+AssignmentService -> AssignmentRepository: save(updatedAssignment)
+AssignmentRepository -> PostgreSQL: updatedAssignment
+PostgreSQL --> AssignmentRepository: updatedAssignment
+AssignmentRepository --> AssignmentService: updatedAssignment
+AssignmentService --> AssignmentController: updatedAssignment
+AssignmentController --> Student: 200 OK
+
+@enduml

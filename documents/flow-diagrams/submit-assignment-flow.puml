@@ -1,0 +1,22 @@
+@startuml
+title Submit Assignment Sequence
+actor Student
+participant AssignmentController
+participant AssignmentService
+participant AssignmentRepository
+database PostgreSQL
+
+Student -> AssignmentController: POST assignment to "/assignments/submit"
+
+alt missing data
+AssignmentController --> Student: 400 Bad Request
+end
+
+AssignmentController -> AssignmentService: submitAssignment()
+AssignmentService -> AssignmentRepository: submitAssignment()
+AssignmentRepository -> PostgreSQL: save()
+PostgreSQL --> AssignmentRepository
+AssignmentRepository --> AssignmentService
+AssignmentService --> AssignmentController
+AssignmentController --> Student: 200 OK
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+title Get user info (to be displayed in dashboard)
+actor Student
+participant UserController
+participant UserService
+participant UserRepository
+database PostgreSQL
+
+Student -> UserController: GET "/user/{userId}"
+UserController -> UserService: getUser(userId)
+UserService -> UserRepository: findById(userId)
+UserRepository -> PostgreSQL: findById(userId)
+
+alt if no user found
+PostgreSQL --> UserRepository: Return null
+UserRepository --> UserService: Return null
+UserService --> UserController: UserNotFound error
+UserController --> Student: 404 Not Found
+end
+
+PostgreSQL --> UserRepository: user info
+UserRepository --> UserService: user info
+UserService --> UserController: user info
+UserController --> Student: 200 OK
+
+@enduml

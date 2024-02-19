@@ -1,0 +1,26 @@
+@startuml
+
+actor Reviewer
+participant AssignmentController
+participant AssignmentService
+participant AssignmentRepository
+database PostgreSQL
+
+Reviewer -> AssignmentController: GET "/assignments/{assignmentId}"
+AssignmentController -> AssignmentService: getAssignmentDetail(assignmentId)
+AssignmentService -> AssignmentRepository: getAssignmentDetail(assignmentId)
+AssignmentRepository -> PostgreSQL: getAssignmentById(assignmentId)
+
+alt No assignment found with given ID
+PostgreSQL --> AssignmentRepository: null
+AssignmentRepository --> AssignmentService: null
+AssignmentService --> AssignmentController: AssignmentNotFoundException
+AssignmentController --> Reviewer: 404 Not Found
+end
+
+PostgreSQL --> AssignmentRepository: assignment
+AssignmentRepository --> AssignmentService: assignment
+AssignmentService --> AssignmentController: assignment
+AssignmentController --> Reviewer: 200 OK
+
+@enduml

@@ -1,0 +1,37 @@
+@startuml
+
+entity User {
+    * id: Long <<generated>>
+    --
+    * cohortStartDate: LocalDateTime
+    * username: String
+    * password: String
+    * authorities: List<Authority>
+    * assignments: List<Assignment>
+}
+
+entity Authority {
+    * id: Long <<generated>>
+    --
+    * authority: String
+    * user: User
+}
+
+entity Assignment {
+    * id: Long <<generated>>
+    --
+    status: String
+    number: Integer
+    githubUrl: String
+    branch: String
+    reviewVideoUrl: String
+    user: User
+    codeReviewer: User
+}
+
+'Relationships
+User ||--|{ Assignment
+User||--|{ Authority
+
+
+@enduml

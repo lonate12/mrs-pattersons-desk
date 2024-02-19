@@ -1,0 +1,24 @@
+@startuml
+actor Reviewer
+participant AssignmentController
+participant AssignmentService
+participant AssignmentRepository
+database PostgreSQL
+
+Reviewer -> AssignmentController: GET "/assignments/unclaimed"
+AssignmentController -> AssignmentService: getAllUnclaimedAssignments()
+AssignmentService -> AssignmentRepository: getAllUnclaimedAssignments()
+AssignmentRepository -> PostgreSQL: findAll(unclaimedAssignmentExample)
+
+alt No unclaimed assignments found
+PostgreSQL --> AssignmentRepository: Empty Iterable
+AssignmentRepository --> AssignmentService: Empty Iterable
+AssignmentService --> AssignmentController: Empty List
+AssignmentController --> Reviewer: Empty List
+end
+
+PostgreSQL --> AssignmentRepository: Iterable
+AssignmentRepository --> AssignmentService: Iterable
+AssignmentService --> AssignmentController: Iterable
+AssignmentController --> Reviewer: 200 OK
+@enduml
