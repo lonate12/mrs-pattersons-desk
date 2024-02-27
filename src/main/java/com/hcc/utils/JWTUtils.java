@@ -1,15 +1,17 @@
 package com.hcc.utils;
 
 
+import com.hcc.entities.Authority;
 import com.hcc.entities.User;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.Date;
+import java.util.*;
 import java.util.function.Function;
 
 @Component
@@ -28,17 +30,16 @@ public class JWTUtils {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
-    //get the claims (not sure which datatype- make generic to pass the claim) from token-objects inside jwt
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver ){
 
         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
     }
 
-    private Claims getAllClaimsFromToken(String token){
+    // NOTE: Changes this from private to public to test something out, make sure to go back and make it private again
+    public Claims getAllClaimsFromToken(String token){
         return Jwts.parser()
                 .setSigningKey(secret)
-                .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
@@ -54,22 +55,33 @@ public class JWTUtils {
     }
 
     //generate token
-    public String generateToken(User user){
-        return doGenerateToken(user.getUsername());
-
+    public String generateToken(Authentication auth){
+        return doGenerateToken(auth);
     }
 
-    private String doGenerateToken(String subject){
-        Claims claims = Jwts.claims().setSubject(subject).build();
-        claims.put("scopes",
-                Arrays.asList(new SimpleGrantedAuthority("LEARNER_ROLE"),
-                new SimpleGrantedAuthority("CODE_REVIEWER_ROLE")));
+    private String doGenerateToken(Authentication auth){
+        Claims claims = Jwts.claims().setSubject(auth.getName());
+        claims.put("scopes", auth.getAuthorities());
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
+    }
+
+    public Collection<? extends GrantedAuthority> getAuthoritiesFromToken(String token) {
+        List<GrantedAuthority> authorityList = new ArrayList<>();
+
+        List<HashMap<String, String>> scopes = getAllClaimsFromToken(token).get("scopes", ArrayList.class);
+
+        for (Map<String, String> scope : scopes) {
+            for (Map.Entry<String, String> entry : scope.entrySet()) {
+               authorityList.add(new SimpleGrantedAuthority(entry.getValue()));
+            }
+        }
+
+        return authorityList;
     }
 
     public boolean validateToken(String token, UserDetails userDetails){

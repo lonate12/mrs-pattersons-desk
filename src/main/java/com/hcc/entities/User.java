@@ -1,7 +1,10 @@
 package com.hcc.entities;
 
+import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -13,15 +16,17 @@ import java.util.List;
 @Entity
 @Table(name="users")
 @Setter
+@Getter
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
     private LocalDate cohortStartDate;
+    @Column(unique = true)
     private String username;
     private String password;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<Authority> authorities;
     @OneToMany(mappedBy = "user")
     private List<Assignment> assignments;
@@ -59,7 +64,10 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(new Authority("role_student"));
+        for (Authority authority : authorities) {
+            roles.add(new SimpleGrantedAuthority(authority.toString()));
+        }
+
         return roles;
     }
 
