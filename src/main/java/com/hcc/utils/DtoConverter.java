@@ -3,13 +3,12 @@ package com.hcc.utils;
 import com.hcc.dto.UpdateAssignmentRequestDTO;
 import com.hcc.entities.Assignment;
 import com.hcc.entities.User;
+import com.hcc.enums.AssignmentStatusEnum;
 import com.hcc.exceptions.InsufficientPermissionsException;
-import org.springframework.security.core.GrantedAuthority;
+import com.hcc.exceptions.InvalidStatusException;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 public class DtoConverter {
@@ -25,6 +24,7 @@ public class DtoConverter {
             // List of status changes requiring reviewer permissions
             List<String> reviewerList = new ArrayList<>(Arrays.asList("UNDER_REVIEW", "REJECTED", "COMPLETED"));
 
+            // If request.getStatus() is in the reviewer list, we need to check that they're a reviewer
             if (reviewerList.contains(request.getStatus())) {
                 // In this block, we first have to make sure the requester is a reviewer, if not, we'll throw an exception
                 if (!isReviewer) {
@@ -32,6 +32,20 @@ public class DtoConverter {
                 }
                 assignment.setCodeReviewer(requestingUser);
             }
+
+            // Check if the request.getStatus() is a valid string
+            boolean isValidStatus = false;
+
+            for (AssignmentStatusEnum status : AssignmentStatusEnum.values()) {
+                if (status.toString().equals(request.getStatus())) {
+                    isValidStatus = true;
+                }
+            }
+
+            if (!isValidStatus) {
+                throw new InvalidStatusException("Updated status is invalid.");
+            }
+
 
             assignment.setStatus(request.getStatus());
         }
