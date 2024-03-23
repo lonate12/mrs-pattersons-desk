@@ -9,13 +9,18 @@ import PropTypes from 'prop-types'
 export default function Login() {
 
     const [ errorMessage, setErrorMessage ] = useState(null);
+    const [formData, setFormData] = useState({});
     const { updateLoggedInUser } = AuthData();
     const navigate = useNavigate();
 
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        setFormData((prevFormData) => ({...prevFormData, [name]: value }));
+    }
+
     const doLogin = async (e) => {
         e.preventDefault();
-
-        const response = await loginCall();
+        const response = await loginCall(formData.username, formData.password);
 
         if (response.status === 401) {
             setErrorMessage("Invalid username/password");
@@ -33,14 +38,14 @@ export default function Login() {
         <>
             <div className="container-fluid">
                 <div className="row justify-content-center">
-                    <form className="col-6 login-form">
+                    <form className="col-6 col-sm-12 login-form">
                         <div className="mb-3">
                             <label htmlFor="username" className="form-label">Email address</label>
-                            <input type="email" className="form-control" id="username"/>
+                            <input type="email" onChange={handleChange} className="form-control" id="username" name="username"/>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="password" className="form-label">Password</label>
-                            <input type="password" className="form-control" id="password"/>
+                            <input type="password" onChange={handleChange} className="form-control" id="password" name="password"/>
                         </div>
                         <button type="submit" onClick={doLogin} className="btn btn-primary">Submit</button>
                     </form>
