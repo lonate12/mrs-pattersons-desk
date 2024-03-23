@@ -15,8 +15,8 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/api/assignments")
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class AssignmentController {
-
 
     private AssignmentService assignmentService;
     private final AssignmentRepository assignmentRepository;
