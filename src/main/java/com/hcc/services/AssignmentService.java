@@ -99,4 +99,11 @@ public class AssignmentService {
                 )
         );
     }
+
+    public void deleteAssignment(Long assignmentId) {
+        Assignment assignment = assignmentRepository.findById(assignmentId)
+                .orElseThrow(() -> new AssignmentNotFoundException("Assignment not found."));
+
+        assignmentRepository.deleteById(assignmentId);
+    }
 }

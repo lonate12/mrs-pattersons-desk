@@ -40,4 +40,11 @@ public class AssignmentController {
     public Assignment postAssignment(@RequestBody PostAssignmentRequest request) {
         return assignmentService.postAssignment(request);
     }
+
+    @DeleteMapping(path="/{assignmentId}")
+    public boolean deleteAssignment(@PathVariable Long assignmentId) {
+        System.out.println("Request received...");
+        assignmentService.deleteAssignment(assignmentId);
+        return true;
+    }
 }

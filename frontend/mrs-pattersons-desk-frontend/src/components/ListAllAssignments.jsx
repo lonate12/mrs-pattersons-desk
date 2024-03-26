@@ -1,15 +1,17 @@
 import { AuthData } from "../auth/AuthWrapper";
 import { useState, useEffect } from "react";
 import { getAllAssignments } from "../helpers/apiCalls";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import assignmentNames from "../helpers/assignmentNames";
 import PropTypes from 'prop-types';
 import "../App.css";
+import Alert from "./Alert";
 
 export default function ListAllAssignments() {
 
     const [assignments, setAssignments] = useState([]);
     const { user } = AuthData();
+    const { state: locationState } = useLocation();
 
     useEffect(() => {
         getAllAssignments(user.token).then((response) => {
@@ -21,6 +23,7 @@ export default function ListAllAssignments() {
 
     return (
         <>
+            { locationState ? <Alert message={locationState.message} alertKind={locationState.alertKind}/> : null }
             <h1 className="text-center pt-3">Dashboard for {user.name}</h1>
             <Link to={"new"} className="btn btn-primary col-lg-6 offset-lg-3 col-10 offset-1">Submit new assignment</Link>
             

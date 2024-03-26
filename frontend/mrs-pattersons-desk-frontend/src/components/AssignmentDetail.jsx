@@ -6,6 +6,7 @@ import { getAssignment } from "../helpers/apiCalls";
 import { statusMapping } from "../helpers/utils";
 import PropTypes from "prop-types";
 import "../App.css";
+import Alert from "./Alert";
 
 export default function AssignmentDetail() {
     const {assignmentId} = useParams();
@@ -25,6 +26,21 @@ export default function AssignmentDetail() {
         setPageData((prevPageData) => ({...prevPageData, formData: updatedFormData}));
     }
 
+    const badgeBackgroud = () => {
+        switch (pageData.assignment.status) {
+            case "SUBMITTED" || "RESUBMITTED":
+                return "text-bg-success";
+            case "UNDER_REVIEW":
+                return "text-bg-secondary";
+            case "REJECTED":
+                return "text-bg-danger";
+            case "COMPLETED":
+                return "text-bg-primary";
+            default:
+                return "text-bg-secondary";
+        }
+    }
+
 
     if (isEmpty(pageData.assignment)) {
         return (
@@ -38,8 +54,8 @@ export default function AssignmentDetail() {
 
         return (
             <>
-                { locationState ? <Alert message={locationState.message} /> : null }
-                <h1 className="text-center pt-3">Assignment #{pageData.assignment.number} <span className="badge text-bg-secondary rounded-pill">{status}</span></h1>
+                { locationState ? <Alert message={locationState.message} alertKind={locationState.alertKind} /> : null }
+                <h1 className="text-center pt-3">Assignment #{pageData.assignment.number} <span className={`${badgeBackgroud()} badge rounded-pill`}>{status}</span></h1>
                 <div className="row">
                     <form>
                         <fieldset disabled>
@@ -65,26 +81,4 @@ export default function AssignmentDetail() {
             </>
         );
     }
-}
-
-const Alert = ({message}) => {
-    const [isVisible, setIsVisible] = useState(true);
-
-    const dismiss = () => {
-        window.history.replaceState({}, '');
-        setIsVisible(false);
-    }
-
-    return (
-        <div className={`text-center pt-3 pb-3 ${isVisible ? "" : "d-none"}`}>
-            <div className="alert alert-success" role="alert">
-                { message }
-                <span className="float-end alert-dismiss" onClick={dismiss}>X</span>
-            </div>
-        </div>
-    );
-}
-
-Alert.propTypes = {
-    message: PropTypes.string
 }

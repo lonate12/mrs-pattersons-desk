@@ -1,7 +1,7 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { AuthData } from "../auth/AuthWrapper";
-import { getAssignment, createNewOrUpdateAssignment } from "../helpers/apiCalls";
+import { getAssignment, createNewOrUpdateAssignment, deleteAssignmentCall } from "../helpers/apiCalls";
 import { statusMapping } from "../helpers/utils";
 import { assignmentsList } from "../helpers/assignmentNames";
 
@@ -52,7 +52,7 @@ export default function CreateEditAssignment() {
 
         const successMessage = `Assignment successfully ${isNew ? "created!" : "updated!"}`;
 
-        navigate(`/assignments/${response.id}`, {state: {message: successMessage}});
+        navigate(`/assignments/${response.id}`, {state: {message: successMessage, alertKind: "alert-success"}});
     }
 
     const dropDown = () => {
@@ -71,12 +71,35 @@ export default function CreateEditAssignment() {
         );
     }
 
+    const deleteAssignment = async () => {
+        const confirmDelete = confirm("Are you sure you want to delete this assignment? This action is irreversible.");
+        if (!confirmDelete) return navigate(`/assignments/${assignmentId}`, {state: {message: "Canceled delete", alertKind: "alert-warning"}});
+
+        const response = await deleteAssignmentCall(user.token, assignmentId);
+        navigate("/assignments", {state: {message: `Assignment ID ${assignmentId} deleted`, alertKind: "alert-danger"}});
+    }
+
     const unableToEdit = (["UNDER_REVIEW"].includes(pageData.assignment.status)) ? true : false;
     const status = ["UNDER_REVIEW", "REJECTED"].includes(pageData.assignment.status) ? statusMapping[pageData.assignment.status] : pageData.assignment.status;
 
+    const badgeBackgroud = () => {
+        switch (pageData.assignment.status) {
+            case "SUBMITTED" || "RESUBMITTED":
+                return "text-bg-success";
+            case "UNDER_REVIEW":
+                return "text-bg-secondary";
+            case "REJECTED":
+                return "text-bg-danger";
+            case "COMPLETED":
+                return "text-bg-primary";
+            default:
+                return "text-bg-secondary";
+        }
+    }
+
     return (
         <>
-            <h1 className="text-center pt-3">{isNew ? "Create new submission" : `Assignment #${pageData.assignment.number}`} <span className="badge text-bg-secondary rounded-pill">{status}</span></h1>
+            <h1 className="text-center pt-3">{isNew ? "Create new submission" : `Assignment #${pageData.assignment.number}`} <span className={`badge ${badgeBackgroud()} rounded-pill`}>{status}</span></h1>
             <div className="row">
                 <form onSubmit={handleSubmit}>
                     <fieldset disabled={unableToEdit}>
@@ -92,7 +115,7 @@ export default function CreateEditAssignment() {
                         { 
                             unableToEdit ? 
                                 <button className="btn btn-danger">Unable to edit an In Review assignment</button> :  
-                                (<div className="mb-3"><button className="btn btn-primary" type="submit">Submit</button></div>)
+                                (<EditButtons deleteAssignment={deleteAssignment} isNew={isNew} />)
                         }
                     </fieldset>
                 </form>
@@ -105,5 +128,16 @@ export default function CreateEditAssignment() {
                 </Link>
             </div>
         </>
+    );
+}
+
+const EditButtons = ({deleteAssignment, isNew}) => {
+    return (
+        <div className="mb-3">
+            <button className="btn btn-primary" type="submit">{isNew ? "Submit" : "Save edits"}</button>
+            {
+                isNew ? null : <button className="btn btn-danger ms-3" onClick={deleteAssignment}>Delete Assignment</button>
+            }
+        </div>
     );
 }

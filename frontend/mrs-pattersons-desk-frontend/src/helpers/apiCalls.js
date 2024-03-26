@@ -117,3 +117,37 @@ export async function createNewOrUpdateAssignment(token, assignment) {
     const jsonResponse = await response.json();
     return jsonResponse;
 }
+
+
+
+/* 
+ * @param {string} token            JWT token to be used in the Auth header
+ * @param {string} assignmentId     Assignment ID of assignment to be deleted
+ * @return [boolean]                Hardcoded true
+ */
+export async function deleteAssignmentCall(token, assignmentId) {
+    // These variables will be changed it's a call to update vs. create new
+    let method = "DELETE"
+    
+    const headers = new Headers({
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+    });
+
+    const options = {
+        headers: headers,
+        credentials: "include",
+        method: method,
+        mode: "cors"
+    };
+
+    const response = await fetch(`${BACKEND_URL}/assignments/${assignmentId}`, options);
+
+    if (response.status !== 200) {
+        console.log(`Response error: ${response}`);
+        throw new Error(`Something went wrong. Status code ${response.status}.`);
+    }
+
+    const jsonResponse = await response.json();
+    return jsonResponse;
+}
