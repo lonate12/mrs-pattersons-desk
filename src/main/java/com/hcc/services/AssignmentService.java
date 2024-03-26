@@ -17,9 +17,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -27,12 +30,18 @@ public class AssignmentService {
 
     private AssignmentRepository assignmentRepository;
 
+    @Transactional
     public List<Assignment> getAllAssignments(Authentication auth) {
         Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
         User user = (User) auth.getPrincipal();
 
         if (authorities.contains(new SimpleGrantedAuthority(AuthorityEnum.ROLE_CODE_REVIEWER.toString()))) {
-            return assignmentRepository.findByCodeReviewerId(user.getId());
+
+            List<Assignment> codeReviewerOwnedAssignments = assignmentRepository.findByCodeReviewerId(user.getId());
+            List<Assignment> submittedAssignments = assignmentRepository.findByStatus("SUBMITTED");
+            List<Assignment> resubmittedAssignments = assignmentRepository.findByStatus("RESUBMITTED");
+
+            return Stream.of(codeReviewerOwnedAssignments, submittedAssignments, resubmittedAssignments).flatMap(Collection::stream).collect(Collectors.toList());
         } else {
             return assignmentRepository.findByUserId(user.getId());
         }

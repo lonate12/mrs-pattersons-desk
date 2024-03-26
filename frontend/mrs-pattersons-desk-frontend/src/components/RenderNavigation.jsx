@@ -44,7 +44,7 @@ export const RenderMenu = () => {
         <>
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
                 <div className="container-fluid">
-                    <Link className="navbar-brand" to="/">{"Mrs. Patterson's Desk"}</Link>
+                    <Link className="navbar-brand position-relative" to="/">{"Mrs. Patterson's Desk"} { user.isReviewer ? <span className="badge text-danger">[ Reviewer ]</span> : null}</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                     </button>
@@ -57,6 +57,9 @@ export const RenderMenu = () => {
                                             <MenuItem key={i} r={r} />
                                         );
                                     } else if (user.isAuthenticated && r.isMenu) {
+                                        if (r.name === "Submit assignment" && user.isReviewer) {
+                                            return false;
+                                        }
                                         return (
                                             <MenuItem key={i} r={r} />
                                         );

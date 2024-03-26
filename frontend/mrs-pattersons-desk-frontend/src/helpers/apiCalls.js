@@ -85,7 +85,7 @@ export async function getAssignment(token, assignmentId) {
  * @return [assignments]            Newly created assignment   
  */
 export async function createNewOrUpdateAssignment(token, assignment) {
-    // These variables will be changed it's a call to update vs. create new
+    // These variables will be changed if it's a call to update vs. create new
     let method = "POST"
     let endpoint = "";
     

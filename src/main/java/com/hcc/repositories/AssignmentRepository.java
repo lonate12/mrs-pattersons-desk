@@ -8,4 +8,6 @@ import java.util.List;
 public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
     List<Assignment> findByUserId(Long userId);
     List<Assignment> findByCodeReviewerId(Long userId);
+
+    List<Assignment> findByStatus(String status);
 }

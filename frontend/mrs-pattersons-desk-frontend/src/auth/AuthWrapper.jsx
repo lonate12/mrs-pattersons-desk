@@ -9,7 +9,7 @@ export const AuthData = () => useContext(AuthContext);
 
 export const AuthWrapper = () => {
 
-    const [user, setUser] = useState({name: "", isAuthenticated: false, role: null, token:null});
+    const [user, setUser] = useState({name: "", isAuthenticated: false, role: null, token:null, isReviewer: false});
 
     useEffect(() => {
         const loadedToken = localStorage.getItem("mrsPattersonsDesk");
@@ -22,12 +22,18 @@ export const AuthWrapper = () => {
                 return;
             }
 
-            setUser({name: decodedToken.sub, isAuthenticated: true, role: decodedToken.scopes[0].authority, token: token});
+            const authority = decodedToken.scopes[0].authority;
+            const isReviewer = authority === "ROLE_CODE_REVIEWER" ? true : false;
+
+            setUser({name: decodedToken.sub, isAuthenticated: true, role: authority, token: token, isReviewer: isReviewer});
         }
     }, []);
 
     const updateLoggedInUser = (userInfo, token) => {
-        setUser({name: userInfo.sub, isAuthenticated: true, role: userInfo.scopes[0].authority, token: token});
+        const authority = userInfo.scopes[0].authority;
+        const isReviewer = authority === "ROLE_CODE_REVIEWER" ? true : false;
+
+        setUser({name: userInfo.sub, isAuthenticated: true, role: authority, token: token, isReviewer: isReviewer});
     }
 
     const logout = () => {

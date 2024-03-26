@@ -40,6 +40,8 @@ export default function CreateEditAssignment() {
         if (!isNew) {
             let updatedObject = {...pageData.assignment, ...pageData.formData};
             updatedObject.assignmentNumber = parseInt(updatedObject.assignmentNumber);
+            // If we're resubmitting after a rejected status, need to update the status field
+            updatedObject.status = "RESUBMITTED";
             console.log(updatedObject);
             response = await createNewOrUpdateAssignment(user.token, updatedObject);
         } else {
@@ -119,7 +121,7 @@ export default function CreateEditAssignment() {
                         { 
                             unableToEdit ? 
                                 <button className="btn btn-danger">Unable to edit an In Review assignment</button> :  
-                                (<EditButtons deleteAssignment={deleteAssignment} isNew={isNew} />)
+                                (<EditButtons deleteAssignment={deleteAssignment} isNew={isNew} currentStatus={pageData.assignment.status}/>)
                         }
                     </fieldset>
                 </form>
@@ -135,10 +137,17 @@ export default function CreateEditAssignment() {
     );
 }
 
-const EditButtons = ({deleteAssignment, isNew}) => {
+const EditButtons = ({deleteAssignment, isNew, currentStatus}) => {
+    const mainActionButtonPrompt = () => {
+        if (isNew) {
+            return "Submit";
+        }
+
+        return currentStatus === "REJECTED" ? "Resubmit" : "Save edits";
+    };
     return (
         <div className="mb-3">
-            <button className="btn btn-primary" type="submit">{isNew ? "Submit" : "Save edits"}</button>
+            <button className="btn btn-primary" type="submit">{mainActionButtonPrompt()}</button>
             {
                 isNew ? null : <button className="btn btn-danger ms-3" onClick={deleteAssignment}>Delete Assignment</button>
             }
@@ -148,5 +157,6 @@ const EditButtons = ({deleteAssignment, isNew}) => {
 
 EditButtons.propTypes = {
     deleteAssignment: PropTypes.func,
-    isNew: PropTypes.bool
+    isNew: PropTypes.bool,
+    currentStatus: PropTypes.string
 }

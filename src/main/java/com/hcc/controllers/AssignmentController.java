@@ -43,7 +43,6 @@ public class AssignmentController {
 
     @DeleteMapping(path="/{assignmentId}")
     public boolean deleteAssignment(@PathVariable Long assignmentId) {
-        System.out.println("Request received...");
         assignmentService.deleteAssignment(assignmentId);
         return true;
     }
