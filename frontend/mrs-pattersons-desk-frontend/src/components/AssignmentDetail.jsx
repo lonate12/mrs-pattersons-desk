@@ -4,7 +4,6 @@ import { AuthData } from "../auth/AuthWrapper";
 import { isEmpty } from "../helpers/utils";
 import { getAssignment } from "../helpers/apiCalls";
 import { statusMapping } from "../helpers/utils";
-import PropTypes from "prop-types";
 import "../App.css";
 import Alert from "./Alert";
 

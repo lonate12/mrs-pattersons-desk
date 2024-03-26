@@ -10,7 +10,7 @@ export const RenderRoutes = () => {
     return (
         <div className="row justify-content-center">
             <div className="container-fluid">
-                <div className="row bg-light col-10 offset-1" style={{marginTop: 20, marginBottom: 20, paddingBottom: 20}}>
+                <div className="row bg-light col-10 offset-1 position-relative" style={{marginTop: 20, marginBottom: 20, paddingBottom: 20}}>
                     <Routes>
                         {
                             nav.map((r, i) => {

@@ -44,3 +44,7 @@ export const AuthWrapper = () => {
         </AuthContext.Provider>
     );
 }
+
+// Dynamically generated private and public routes and nav bar pattern copied and modified for this project from
+// KodieCode YouTube video "How to create Protected Routes and Authentication with React Router V6 2023"
+// https://youtu.be/q94v5AhgrW4?si=T_QIELFjW8Qk1GBE

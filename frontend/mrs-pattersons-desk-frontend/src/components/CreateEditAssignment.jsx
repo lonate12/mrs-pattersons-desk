@@ -4,6 +4,7 @@ import { AuthData } from "../auth/AuthWrapper";
 import { getAssignment, createNewOrUpdateAssignment, deleteAssignmentCall } from "../helpers/apiCalls";
 import { statusMapping } from "../helpers/utils";
 import { assignmentsList } from "../helpers/assignmentNames";
+import PropTypes from "prop-types";
 
 
 export default function CreateEditAssignment() {
@@ -43,7 +44,7 @@ export default function CreateEditAssignment() {
             response = await createNewOrUpdateAssignment(user.token, updatedObject);
         } else {
             let clone = {...pageData.formData};
-            clone.numbassignmentNumberer = parseInt(clone.assignmentNumber);
+            clone.assignmentNumber = parseInt(clone.assignmentNumber);
             console.log(clone);
             response = await createNewOrUpdateAssignment(user.token, clone);
         }
@@ -52,7 +53,7 @@ export default function CreateEditAssignment() {
 
         const successMessage = `Assignment successfully ${isNew ? "created!" : "updated!"}`;
 
-        navigate(`/assignments/${response.id}`, {state: {message: successMessage, alertKind: "alert-success"}});
+        navigate(`/assignments`, {state: {message: successMessage, alertKind: "alert-success"}});
     }
 
     const dropDown = () => {
@@ -75,8 +76,11 @@ export default function CreateEditAssignment() {
         const confirmDelete = confirm("Are you sure you want to delete this assignment? This action is irreversible.");
         if (!confirmDelete) return navigate(`/assignments/${assignmentId}`, {state: {message: "Canceled delete", alertKind: "alert-warning"}});
 
-        const response = await deleteAssignmentCall(user.token, assignmentId);
-        navigate("/assignments", {state: {message: `Assignment ID ${assignmentId} deleted`, alertKind: "alert-danger"}});
+        deleteAssignmentCall(user.token, assignmentId).then(() => {
+            navigate("/assignments", {state: {message: `Assignment deleted successfully.`, alertKind: "alert-success"}});
+        }).catch((error) => {
+            navigate("/assignments", {state: {message: `There was an issue when trying to delete the assignment. ${error.message}`, alertKind: "alert-danger"}});
+        })
     }
 
     const unableToEdit = (["UNDER_REVIEW"].includes(pageData.assignment.status)) ? true : false;
@@ -140,4 +144,9 @@ const EditButtons = ({deleteAssignment, isNew}) => {
             }
         </div>
     );
+}
+
+EditButtons.propTypes = {
+    deleteAssignment: PropTypes.func,
+    isNew: PropTypes.bool
 }

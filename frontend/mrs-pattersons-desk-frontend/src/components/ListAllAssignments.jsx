@@ -40,6 +40,12 @@ export default function ListAllAssignments() {
                 <div className="tab-content container" id="myTabContent">
                     <div className="tab-pane fade show active " id="wip-tab-pane" role="tabpanel" aria-labelledby="wip-tab" tabIndex="0">
                         <div className="assignments-container boarder boarder-primary form-control mt-5 mb-3 position-relative">
+                            <span className="badge rounded-pill bg-danger position-absolute" style={{left: 20, top: -15, fontSize: 20}}>Needs Rework</span>
+                            <div className="row">
+                                {"REJECTED" in mapOfAssignmentCardLists ? mapOfAssignmentCardLists["REJECTED"] : <h3 className="mt-4">No assignments to view</h3>}
+                            </div>
+                        </div>
+                        <div className="assignments-container boarder boarder-primary form-control mt-5 mb-3 position-relative">
                             <span className="badge rounded-pill bg-success position-absolute" style={{left: 20, top: -15, fontSize: 20}}>Submitted</span>
                             <div className="row">
                                 {"SUBMITTED" in mapOfAssignmentCardLists ? mapOfAssignmentCardLists.SUBMITTED : <h3 className="mt-4">No assignments to view</h3>}
@@ -51,12 +57,6 @@ export default function ListAllAssignments() {
                                 {"UNDER_REVIEW" in mapOfAssignmentCardLists ? mapOfAssignmentCardLists["UNDER_REVIEW"] : <h3 className="mt-4">No assignments to view</h3>}
                             </div>
                         </div>                    
-                        <div className="assignments-container boarder boarder-primary form-control mt-5 mb-3 position-relative">
-                            <span className="badge rounded-pill bg-danger position-absolute" style={{left: 20, top: -15, fontSize: 20}}>Needs Rework</span>
-                            <div className="row">
-                                {"REJECTED" in mapOfAssignmentCardLists ? mapOfAssignmentCardLists["REJECTED"] : <h3 className="mt-4">No assignments to view</h3>}
-                            </div>
-                        </div>
                     </div>
                     <div className="tab-pane fade" id="completed-tab-pane" role="tabpanel" aria-labelledby="completed-tab" tabIndex="0">
                         <div className="assignments-container boarder boarder-primary form-control mt-5 mb-3 position-relative">
