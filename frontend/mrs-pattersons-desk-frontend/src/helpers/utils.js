@@ -25,3 +25,8 @@ export function isEmpty(obj) {
   
     return true;
   }
+
+export const statusMapping = {
+    "UNDER_REVIEW": "IN REVIEW",
+    "REJECTED": "NEEDS REWORK"
+};

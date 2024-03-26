@@ -41,11 +41,11 @@ export default function Login() {
                     <form className="col-6 col-sm-12 login-form">
                         <div className="mb-3">
                             <label htmlFor="username" className="form-label">Email address</label>
-                            <input type="email" onChange={handleChange} className="form-control" id="username" name="username"/>
+                            <input type="email" onChange={handleChange} className="form-control" id="username" name="username" required={true}/>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="password" className="form-label">Password</label>
-                            <input type="password" onChange={handleChange} className="form-control" id="password" name="password"/>
+                            <input type="password" onChange={handleChange} className="form-control" id="password" name="password" required={true}/>
                         </div>
                         <button type="submit" onClick={doLogin} className="btn btn-primary">Submit</button>
                     </form>

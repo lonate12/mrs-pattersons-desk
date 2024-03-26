@@ -77,3 +77,43 @@ export async function getAssignment(token, assignmentId) {
     const jsonResponse = await response.json();
     return jsonResponse;
 }
+
+
+/* 
+ * @param {string} token            JWT token to be used in the Auth header
+ * @param {string} assignment       An assignment object, needs to have X, X, X, X, X
+ * @return [assignments]            Newly created assignment   
+ */
+export async function createNewOrUpdateAssignment(token, assignment) {
+    // These variables will be changed it's a call to update vs. create new
+    let method = "POST"
+    let endpoint = "";
+    
+    if ("id" in assignment) {
+        method = "PUT";
+        endpoint = `/${assignment.id}`;
+    }
+    
+    const headers = new Headers({
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+    });
+
+    const options = {
+        headers: headers,
+        credentials: "include",
+        method: method,
+        mode: "cors",
+        body: JSON.stringify(assignment)
+    };
+
+    const response = await fetch(`${BACKEND_URL}/assignments${endpoint}`, options);
+
+    if (response.status !== 200) {
+        console.log(`Response error: ${response}`);
+        throw new Error(`Something went wrong. Status code ${response.status}.`);
+    }
+
+    const jsonResponse = await response.json();
+    return jsonResponse;
+}

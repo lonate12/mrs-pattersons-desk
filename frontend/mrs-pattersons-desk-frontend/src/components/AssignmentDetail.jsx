@@ -1,18 +1,20 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link , useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { AuthData } from "../auth/AuthWrapper";
 import { isEmpty } from "../helpers/utils";
 import { getAssignment } from "../helpers/apiCalls";
+import { statusMapping } from "../helpers/utils";
+import PropTypes from "prop-types";
+import "../App.css";
 
 export default function AssignmentDetail() {
     const {assignmentId} = useParams();
     const [pageData, setPageData] = useState({assignment: {}, formData: {}});
-    const [enableEdit, setEnableEdit] = useState(false);
     const { user } = AuthData();
+    const { state: locationState } = useLocation();
 
     useEffect(() => {
         getAssignment(user.token, assignmentId).then((res) => {
-            console.log(res);
             setPageData({assignment: res, formData: res});
         })
     }, [assignmentId, user]);
@@ -31,14 +33,16 @@ export default function AssignmentDetail() {
             </div>
         );
     } else {
-        const submitted = (["SUBMITTED", "RESUBMITTED"].includes(pageData.assignment.status)  && !enableEdit) ? true : false;
+        const unableToEdit = (["UNDER_REVIEW"].includes(pageData.assignment.status)) ? true : false;
+        const status = ["UNDER_REVIEW", "REJECTED"].includes(pageData.assignment.status) ? statusMapping[pageData.assignment.status] : pageData.assignment.status;
 
         return (
-            <div className="row bg-light col-10 offset-1 mt-3" style={{marginTop: 20}}>
-                <h1 className="text-center pt-3">Assignment #{pageData.assignment.number} <span className="badge text-bg-secondary rounded-pill">{pageData.assignment.status}</span></h1>
+            <>
+                { locationState ? <Alert message={locationState.message} /> : null }
+                <h1 className="text-center pt-3">Assignment #{pageData.assignment.number} <span className="badge text-bg-secondary rounded-pill">{status}</span></h1>
                 <div className="row">
                     <form>
-                        <fieldset disabled={submitted}>
+                        <fieldset disabled>
                             <div className="mb-3">
                                 <label htmlFor="githubUrl" className="form-label">GitHub URL</label>
                                 <input type="text" className="form-control" id="githubUrl" name="githubUrl" value={pageData.formData.githubUrl} onChange={handleChange}/>
@@ -47,13 +51,8 @@ export default function AssignmentDetail() {
                                 <label htmlFor="branch" className="form-label">Branch</label>
                                 <input type="text" className="form-control" id="branch" name="branch" value={pageData.formData.branch} onChange={handleChange}/>
                             </div>
-                            <div className="mb-3">
-                                <button className={submitted ? "btn btn-danger" : "btn btn-primary"} 
-                                    type="submit">
-                                        {submitted ? "Already submitted" : "Submit"}
-                                </button>
-                            </div>
                         </fieldset>
+                        { unableToEdit ? null :  (<div className="mb-3"><Link to={"edit"} className="btn btn-primary">Edit</Link></div>)}
                     </form>
                 </div>
                 <div className="row">
@@ -63,7 +62,29 @@ export default function AssignmentDetail() {
                                         Back to Assignments
                     </Link>
                 </div>
-            </div>
+            </>
         );
     }
+}
+
+const Alert = ({message}) => {
+    const [isVisible, setIsVisible] = useState(true);
+
+    const dismiss = () => {
+        window.history.replaceState({}, '');
+        setIsVisible(false);
+    }
+
+    return (
+        <div className={`text-center pt-3 pb-3 ${isVisible ? "" : "d-none"}`}>
+            <div className="alert alert-success" role="alert">
+                { message }
+                <span className="float-end alert-dismiss" onClick={dismiss}>X</span>
+            </div>
+        </div>
+    );
+}
+
+Alert.propTypes = {
+    message: PropTypes.string
 }
