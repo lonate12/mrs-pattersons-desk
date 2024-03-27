@@ -1,5 +1,81 @@
+:root {
+  --primary-color: #94618E;
+  --primary-emphasis-color: #49274A;
+  --danger-color: #e79b0d;
+  --danger-emphasis-color: #a26d09;
+  --main-body-color: #F4DECB;
+  --main-body-color-darker: #ab9b8e;
+  --main-body-color-even-darker: #7a6f66;
+  --secondary-body-color: #F8EEE7;
+}
+
+.bg-light {
+  background-color: var(--secondary-body-color) !important;
+}
+
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-emphasis-color);
+  border: 1px solid var(--primary-emphasis-color);
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  border: 1px solid var(--danger-color);
+}
+
+.btn-danger:hover {
+  background-color: var(--danger-emphasis-color);
+  border: 1px solid var(--danger-emphasis-color);
+}
+
+.btn-info {
+  background-color: var(--main-body-color-even-darker) !important;
+  border: 1px solid var(--main-body-color-even-darker) !important;
+  color: white;
+}
+
+.bg-danger {
+  background-color: var(--danger-color) !important;
+}
+
+.bg-success {
+  background-color: var(--primary-color) !important;
+}
+
+.bg-primary {
+  background-color: var(--main-body-color-darker) !important;
+  color: white;
+}
+
+.text-bg-primary {
+  background-color: var(--main-body-color-darker) !important;
+}
+
+.nav-tabs {
+  background-color: var(--secondary-body-color) !important;
+}
+
+.nav-tabs  .nav-link:active {
+  background-color: var(--secondary-body-color) !important;
+}
+
+.tab-content {
+  background-color: var(--main-body-color-even-darker) !important;
+}
+
+button .nav-link.active {
+  background-color: var(--main-body-color-even-darker) !important;
+}
+
+
 body {
-  background-color: #c1d3fe
+  background-color: var(--main-body-color);
 }
 
 .login-form {

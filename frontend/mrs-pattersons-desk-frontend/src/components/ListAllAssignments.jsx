@@ -16,6 +16,7 @@ export default function ListAllAssignments() {
 
     useEffect(() => {
         getAllAssignments(user.token).then((response) => {
+            console.log(response);
             setAssignments(response);
         });
     }, [user, locationState]);

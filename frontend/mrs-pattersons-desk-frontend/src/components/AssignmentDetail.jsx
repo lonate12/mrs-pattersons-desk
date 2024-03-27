@@ -21,28 +21,22 @@ export default function AssignmentDetail() {
         })
     }, [assignmentId, user]);
 
-    const handleChange = (e) => {
-        const {name, value} = e.target;
-        const updatedFormData = {...pageData.formData, [name]: value};
-        setPageData((prevPageData) => ({...prevPageData, formData: updatedFormData}));
-    }
-
     const handleUpdateStatus = (user, assignment, newStatus) => {
-        assignment.status = newStatus;
         const reviewVideoUrl = prompt("Enter the URL for the review video", "");
         console.log(reviewVideoUrl);
 
         if (reviewVideoUrl === "" || reviewVideoUrl === null) {
             navigate(`/assignments/${assignment.id}`, {state: {message: "You must include a URL to the review video in order to mark as completed or rejected", alertKind: "alert-danger"}});
+        } else {
+            assignment.status = newStatus;
+            assignment.reviewVideoUrl = reviewVideoUrl;
+
+            createNewOrUpdateAssignment(user.token, assignment).then(() => {
+                navigate("/assignments", {state: {message: `Successfully updated assignment status to ${newStatus}`, alertKind: "alert-success"}});
+            }).catch((error) => {
+                navigate("", {state: {message: `An error occurred when trying to update status: ${error.message}`, alertKind: "alert-danger"}});
+            });
         }
-
-        assignment.reviewVideoUrl = reviewVideoUrl;
-
-        createNewOrUpdateAssignment(user.token, assignment).then(() => {
-            navigate("/assignments", {state: {message: `Successfully updated assignment status to ${newStatus}`, alertKind: "alert-success"}});
-        }).catch((error) => {
-            navigate("", {state: {message: `An error occurred when trying to update status: ${error.message}`, alertKind: "alert-danger"}});
-        });
     }
 
     const badgeBackgroud = () => {
