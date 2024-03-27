@@ -105,7 +105,7 @@ export default function CreateEditAssignment() {
 
     return (
         <>
-            <h1 className="text-center pt-3">{isNew ? "Create new submission" : `Assignment #${pageData.assignment.number}`} <span className={`badge ${badgeBackgroud()} rounded-pill`}>{status}</span></h1>
+            <h1 className="text-center pt-3">{isNew ? "Create new submission" : `Assignment ${pageData.assignment.number}`} <span className={`badge ${badgeBackgroud()} rounded-pill align-top`}>{status}</span></h1>
             <div className="row">
                 <form onSubmit={handleSubmit}>
                     <fieldset disabled={unableToEdit}>
@@ -126,11 +126,11 @@ export default function CreateEditAssignment() {
                     </fieldset>
                 </form>
             </div>
-            <div className="row">
+            <div className="row justify-content-end">
                 <Link to={"/assignments"} 
-                                className="btn btn-secondary mb-3" 
-                                style={{marginLeft: 10}}>
-                                    Back to Assignments
+                                        className="btn btn-info mb-3 col-12 col-md-6 col-xl-2 float-end" 
+                                        style={{marginLeft: 10}}>
+                    {"<- Back to Assignments"}
                 </Link>
             </div>
         </>

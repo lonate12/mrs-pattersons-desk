@@ -6,7 +6,7 @@ import { getAssignment, createNewOrUpdateAssignment } from "../helpers/apiCalls"
 import { statusMapping } from "../helpers/utils";
 import "../App.css";
 import Alert from "./Alert";
-import PropTypes from "prop-types";
+import PropTypes, { bool } from "prop-types";
 
 export default function AssignmentDetail() {
     const {assignmentId} = useParams();
@@ -30,10 +30,13 @@ export default function AssignmentDetail() {
     const handleUpdateStatus = (user, assignment, newStatus) => {
         assignment.status = newStatus;
         const reviewVideoUrl = prompt("Enter the URL for the review video", "");
+        console.log(reviewVideoUrl);
 
-        if (reviewVideoUrl === "") {
+        if (reviewVideoUrl === "" || reviewVideoUrl === null) {
             navigate(`/assignments/${assignment.id}`, {state: {message: "You must include a URL to the review video in order to mark as completed or rejected", alertKind: "alert-danger"}});
         }
+
+        assignment.reviewVideoUrl = reviewVideoUrl;
 
         createNewOrUpdateAssignment(user.token, assignment).then(() => {
             navigate("/assignments", {state: {message: `Successfully updated assignment status to ${newStatus}`, alertKind: "alert-success"}});
@@ -65,41 +68,51 @@ export default function AssignmentDetail() {
             </div>
         );
     } else {
-        const unableToEdit = (["UNDER_REVIEW"].includes(pageData.assignment.status)) ? true : false;
+        const unableToEdit = (["UNDER_REVIEW", "COMPLETED"].includes(pageData.assignment.status)) ? true : false;
         const status = ["UNDER_REVIEW", "REJECTED"].includes(pageData.assignment.status) ? statusMapping[pageData.assignment.status] : pageData.assignment.status;
 
         return (
             <>
                 { locationState ? <Alert message={locationState.message} alertKind={locationState.alertKind} /> : null }
-                <h1 className="text-center pt-3">Assignment {pageData.assignment.number} <span className={`${badgeBackgroud()} badge rounded-pill`}>{status}</span></h1>
-                <div className="row">
-                    <form>
-                        <fieldset disabled>
-                            <div className="mb-3">
-                                <label htmlFor="githubUrl" className="form-label">GitHub URL</label>
-                                <input type="text" className="form-control" id="githubUrl" name="githubUrl" value={pageData.formData.githubUrl} onChange={handleChange}/>
+                <h1 className="text-center pt-3">Assignment {pageData.assignment.number} <span className={`${badgeBackgroud()} badge rounded-pill align-top`}>{status}</span></h1>
+                <div className="assignment-details-container container col-12 col-xl-6">
+                    <div className="input-group mb-3">
+                        <span className="input-group-text" id="basic-addon1">Github URL</span>
+                        <div type="text" className="form-control" style={{borderTopStyle: "none", borderRightStyle: "none"}}>
+                            <a href={pageData.assignment.githubUrl}>{pageData.assignment.githubUrl}</a>
+                        </div>
+                    </div>
+                    <div className="input-group mb-3">
+                        <span className="input-group-text" id="basic-addon1">Branch</span>
+                        <div type="text" className="form-control" style={{borderTopStyle: "none", borderRightStyle: "none"}}>
+                            {pageData.assignment.branch}
+                        </div>
+                    </div>
+                    {["REJECTED", "COMPLETED"].includes(pageData.assignment.status) ? 
+                        <div className="input-group mb-3">
+                            <span className="input-group-text" id="basic-addon1">Review Video URL</span>
+                            <div type="text" className="form-control" style={{borderTopStyle: "none", borderRightStyle: "none"}}>
+                                <a href={pageData.assignment.reviewVideoUrl}>{pageData.assignment.reviewVideoUrl}</a>
                             </div>
-                            <div className="mb-3">
-                                <label htmlFor="branch" className="form-label">Branch</label>
-                                <input type="text" className="form-control" id="branch" name="branch" value={pageData.formData.branch} onChange={handleChange}/>
-                            </div>
-                        </fieldset>
-                        { unableToEdit ? null :  (<div className="mb-3"><Link to={"edit"} className="btn btn-primary">Edit</Link></div>)}
-                    </form>
+                        </div>
+                        : null
+                    }
                 </div>
-                <div className="row justify-content-end">
-                    <AssignmentDetailsActionButtons user={user} assignment={pageData.assignment} updateStatus={handleUpdateStatus}/>
+                <div className="row justify-content-end position-relative">
+                    <AssignmentDetailsActionButtons user={user} assignment={pageData.assignment} updateStatus={handleUpdateStatus} unableToEdit={unableToEdit}/>
                 </div>
             </>
         );
     }
 }
 
-const AssignmentDetailsActionButtons = ({user, assignment, updateStatus}) => {
+const AssignmentDetailsActionButtons = ({user, assignment, updateStatus, unableToEdit}) => {
     return (
         <>
+            { unableToEdit ? null :  (<Link to={"edit"} className="btn btn-primary mb-3 col-12 col-md-6 col-xl-2 float-start">Edit</Link>)}
             {user.isReviewer ? (
                 <>
+
                     <button className="btn btn-success mb-3 col-12 col-md-6 col-xl-2" onClick={() => updateStatus(user, assignment, "COMPLETED")}>
                         Mark complete
                     </button>
@@ -121,5 +134,6 @@ const AssignmentDetailsActionButtons = ({user, assignment, updateStatus}) => {
 AssignmentDetailsActionButtons.propTypes = {
     user: PropTypes.object,
     assignment: PropTypes.object,
-    updateStatus: PropTypes.func
+    updateStatus: PropTypes.func,
+    unableToEdit: bool
 }

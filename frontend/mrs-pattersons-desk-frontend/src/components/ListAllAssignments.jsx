@@ -16,10 +16,9 @@ export default function ListAllAssignments() {
 
     useEffect(() => {
         getAllAssignments(user.token).then((response) => {
-            console.log(response);
             setAssignments(response);
         });
-    }, [user]);
+    }, [user, locationState]);
 
     const claimForReview = async (user, assignment) => {
         assignment.status = "UNDER_REVIEW";
@@ -57,18 +56,18 @@ export default function ListAllAssignments() {
                                 {"REJECTED" in mapOfAssignmentCardLists ? mapOfAssignmentCardLists["REJECTED"] : <h3 className="mt-4">No assignments to view</h3>}
                             </div>
                         </div>
-                        <div className={`assignments-container boarder boarder-primary form-control mt-5 mb-3 position-relative ${user.isReviewer ? "order-3" : ""}`}>
-                            <span className="badge rounded-pill bg-success position-absolute" style={{left: 20, top: -15, fontSize: 20}}>{user.isReviewer ? "Submitted and Resubmitted for review" : "Submitted"}</span>
-                            <div className="row">
-                                {"SUBMITTED" in mapOfAssignmentCardLists ? mapOfAssignmentCardLists.SUBMITTED : <h3 className="mt-4">No assignments to view</h3>}
-                            </div>
-                        </div>
                         <div className={`assignments-container boarder boarder-primary form-control mt-5 mb-3 position-relative ${user.isReviewer ? "order-1" : ""}`}>
                             <span className="badge rounded-pill bg-secondary position-absolute" style={{left: 20, top: -15, fontSize: 20}}>In Review</span>
                             <div className="row">
                                 {"UNDER_REVIEW" in mapOfAssignmentCardLists ? mapOfAssignmentCardLists["UNDER_REVIEW"] : <h3 className="mt-4">No assignments to view</h3>}
                             </div>
-                        </div>                    
+                        </div>   
+                        <div className={`assignments-container boarder boarder-primary form-control mt-5 mb-3 position-relative ${user.isReviewer ? "order-3" : ""}`}>
+                            <span className="badge rounded-pill bg-success position-absolute" style={{left: 20, top: -15, fontSize: 20}}>{user.isReviewer ? "Submitted and Resubmitted for review" : "Submitted"}</span>
+                            <div className="row">
+                                {"SUBMITTED" in mapOfAssignmentCardLists ? mapOfAssignmentCardLists.SUBMITTED : <h3 className="mt-4">No assignments to view</h3>}
+                            </div>
+                        </div>                 
                     </div>
                     <div className="tab-pane fade" id="completed-tab-pane" role="tabpanel" aria-labelledby="completed-tab" tabIndex="0">
                         <div className={`assignments-container boarder boarder-primary form-control mt-5 mb-3 position-relative`}>
@@ -103,7 +102,7 @@ function filterAndMapAssignments(assignments, user, claimForReview) {
 
         // If this is the first assignment with a given status, lets put an 
         // empty list in that spot in the map
-        if (!(assignment.status in mapOfAssignments)) {
+        if (!(status in mapOfAssignments)) {
             mapOfAssignments[status] = [];
         }
 
