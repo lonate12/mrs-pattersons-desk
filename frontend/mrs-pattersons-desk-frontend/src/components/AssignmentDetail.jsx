@@ -71,20 +71,20 @@ export default function AssignmentDetail() {
                 <h1 className="text-center pt-3">Assignment {pageData.assignment.number} <span className={`${badgeBackgroud()} badge rounded-pill align-top`}>{status}</span></h1>
                 <div className="assignment-details-container container col-12 col-xl-6">
                     <div className="input-group mb-3">
-                        <span className="input-group-text" id="basic-addon1">Github URL</span>
+                        <span className="input-group-text col-4 col-md-3" id="basic-addon1">Github URL</span>
                         <div type="text" className="form-control" style={{borderTopStyle: "none", borderRightStyle: "none"}}>
                             <a href={pageData.assignment.githubUrl}>{pageData.assignment.githubUrl}</a>
                         </div>
                     </div>
                     <div className="input-group mb-3">
-                        <span className="input-group-text" id="basic-addon1">Branch</span>
+                        <span className="input-group-text col-4 col-md-3" id="basic-addon1">Branch</span>
                         <div type="text" className="form-control" style={{borderTopStyle: "none", borderRightStyle: "none"}}>
                             {pageData.assignment.branch}
                         </div>
                     </div>
                     {["REJECTED", "COMPLETED"].includes(pageData.assignment.status) ? 
                         <div className="input-group mb-3">
-                            <span className="input-group-text" id="basic-addon1">Review Video URL</span>
+                            <span className="input-group-text col-4 col-md-3" id="basic-addon1">Review Video</span>
                             <div type="text" className="form-control" style={{borderTopStyle: "none", borderRightStyle: "none"}}>
                                 <a href={pageData.assignment.reviewVideoUrl}>{pageData.assignment.reviewVideoUrl}</a>
                             </div>
@@ -92,7 +92,7 @@ export default function AssignmentDetail() {
                         : null
                     }
                 </div>
-                <div className="row justify-content-end position-relative">
+                <div className="row justify-content-around position-relative">
                     <AssignmentDetailsActionButtons user={user} assignment={pageData.assignment} updateStatus={handleUpdateStatus} unableToEdit={unableToEdit}/>
                 </div>
             </>
@@ -103,7 +103,7 @@ export default function AssignmentDetail() {
 const AssignmentDetailsActionButtons = ({user, assignment, updateStatus, unableToEdit}) => {
     return (
         <>
-            { unableToEdit ? null :  (<Link to={"edit"} className="btn btn-primary mb-3 col-12 col-md-6 col-xl-2 float-start">Edit</Link>)}
+            { unableToEdit ? null :  (<Link to={"edit"} className="btn btn-primary mb-3 col-12 col-md-6 col-xl-2" style={{lineHeight: 3}}>Edit</Link>)}
             {user.isReviewer ? (
                 <>
 
@@ -119,7 +119,7 @@ const AssignmentDetailsActionButtons = ({user, assignment, updateStatus, unableT
             <Link to={"/assignments"} 
                                     className="btn btn-info mb-3 col-12 col-md-6 col-xl-2 float-end" 
                                     style={{marginLeft: 10}}>
-                {"<- Back to Assignments"}
+                <i className="bi bi-arrow-90deg-left me-2"></i>Back to Assignments
             </Link>
         </>
     );

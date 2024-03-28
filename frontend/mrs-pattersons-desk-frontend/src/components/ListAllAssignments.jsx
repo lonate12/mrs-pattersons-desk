@@ -37,7 +37,7 @@ export default function ListAllAssignments() {
         <>
             { locationState ? <Alert message={locationState.message} alertKind={locationState.alertKind}/> : null }
             <h1 className="text-center pt-3">Dashboard for {user.name}</h1>
-            <Link to={"new"} className={`btn btn-primary col-lg-6 offset-lg-3 col-10 offset-1 ${user.isReviewer ? "d-none" : ""}`}>Submit new assignment</Link>
+            <Link to={"new"} className={`btn btn-primary col-lg-6 offset-lg-3 col-10 offset-1 mb-3 ${user.isReviewer ? "d-none" : ""}`}>Submit new assignment</Link>
             
             <div className="container">
                 <div className="row rounded">
