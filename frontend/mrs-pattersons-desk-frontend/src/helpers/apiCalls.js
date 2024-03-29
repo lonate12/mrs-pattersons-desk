@@ -1,4 +1,5 @@
-const BACKEND_URL = 'http://localhost:8080/api';
+// const BACKEND_URL = 'http://localhost:8080/api';
+const BACKEND_URL = 'https://zfimdqw3si.us-east-2.awsapprunner.com/api';
 
 /* 
  * Call to login service to request a JWT token
@@ -40,7 +41,7 @@ export async function getAllAssignments(token) {
         mode: "cors"
     };
 
-    const response = await fetch('http://localhost:8080/api/assignments', options);
+    const response = await fetch(`${BACKEND_URL}/assignments`, options);
 
     if (response.status !== 200) {
         throw new Error(`Something went wrong. Status code ${response.status}.`);
@@ -68,7 +69,7 @@ export async function getAssignment(token, assignmentId) {
         mode: "cors"
     };
 
-    const response = await fetch(`http://localhost:8080/api/assignments/${assignmentId}`, options);
+    const response = await fetch(`${BACKEND_URL}/assignments/${assignmentId}`, options);
 
     if (response.status !== 200) {
         throw new Error(`Something went wrong. Status code ${response.status}.`);

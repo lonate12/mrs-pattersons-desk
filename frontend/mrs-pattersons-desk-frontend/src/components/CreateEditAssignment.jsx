@@ -21,7 +21,6 @@ export default function CreateEditAssignment() {
         if (isNew) return;
 
         getAssignment(user.token, assignmentId).then((res) => {
-            console.log(res);
             setPageData({assignment: res, formData: res});
         })
     }, [assignmentId, user, isNew]);
@@ -42,16 +41,12 @@ export default function CreateEditAssignment() {
             updatedObject.assignmentNumber = parseInt(updatedObject.assignmentNumber);
             // If we're resubmitting after a rejected status, need to update the status field
             updatedObject.status = "RESUBMITTED";
-            console.log(updatedObject);
             response = await createNewOrUpdateAssignment(user.token, updatedObject);
         } else {
             let clone = {...pageData.formData};
             clone.assignmentNumber = parseInt(clone.assignmentNumber);
-            console.log(clone);
             response = await createNewOrUpdateAssignment(user.token, clone);
         }
-
-        console.log(response);
 
         const successMessage = `Assignment successfully ${isNew ? "created!" : "updated!"}`;
 
