@@ -8,9 +8,9 @@ export const RenderRoutes = () => {
     const {user} = AuthData();
 
     return (
-        <div className="row justify-content-center">
-            <div className="container-fluid">
-                <div className="row bg-light col-10 offset-1 position-relative" style={{marginTop: 20, marginBottom: 20, paddingBottom: 20}}>
+        // <div className="row justify-content-center">
+            <div className="container-fluid d-flex justify-content-center">
+                <div className="row bg-light col-10 position-relative" style={{marginTop: 20, marginBottom: 20, paddingBottom: 20}}>
                     <Routes>
                         {
                             nav.map((r, i) => {
@@ -25,7 +25,7 @@ export const RenderRoutes = () => {
                     </Routes>
                 </div>
             </div>
-        </div>
+        // </div>
     );
 }
 

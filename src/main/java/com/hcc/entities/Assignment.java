@@ -43,4 +43,18 @@ public class Assignment {
         this.user = user;
         this.codeReviewer = codeReviewer;
     }
+
+    @Override
+    public String toString() {
+        return "Assignment{" +
+                "id=" + id +
+                ", status='" + status + '\'' +
+                ", number=" + number +
+                ", githubUrl='" + githubUrl + '\'' +
+                ", branch='" + branch + '\'' +
+                ", reviewVideoUrl='" + reviewVideoUrl + '\'' +
+                ", user=" + user +
+                ", codeReviewer=" + codeReviewer +
+                '}';
+    }
 }

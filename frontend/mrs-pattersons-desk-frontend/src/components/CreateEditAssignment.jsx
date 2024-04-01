@@ -11,8 +11,8 @@ export default function CreateEditAssignment() {
 
     const { assignmentId } = useParams();
     const { user }= AuthData();
-    const emptyAssignment = {assignmentNumber: null, githubUrl: "", status: "", id: null, branch:"", reviewVideoUrl: ""}
-    const emptyFormData = {assignmentNumber: null, githubUrl: "", branch:""}
+    const emptyAssignment = {number: null, githubUrl: "", status: "", id: null, branch:"", reviewVideoUrl: ""}
+    const emptyFormData = {number: null, githubUrl: "", branch:""}
     const [pageData, setPageData] = useState({assignment: emptyAssignment, formData: emptyFormData});
     const isNew = assignmentId === undefined ? true : false;
     const navigate = useNavigate();
@@ -38,9 +38,15 @@ export default function CreateEditAssignment() {
 
         if (!isNew) {
             let updatedObject = {...pageData.assignment, ...pageData.formData};
+            console.log("UpdatedObject...");
+            console.log(updatedObject);
             updatedObject.assignmentNumber = parseInt(updatedObject.assignmentNumber);
             // If we're resubmitting after a rejected status, need to update the status field
-            updatedObject.status = "RESUBMITTED";
+            if (updatedObject.status === "REJECTED") {
+                updatedObject.status = "RESUBMITTED";
+            }
+            // Clear out the video review url
+            updatedObject.reviewVideoUrl = null;
             response = await createNewOrUpdateAssignment(user.token, updatedObject);
         } else {
             let clone = {...pageData.formData};
@@ -101,17 +107,16 @@ export default function CreateEditAssignment() {
     return (
         <>
             <h1 className="text-center pt-3">{isNew ? "Create new submission" : `Assignment ${pageData.assignment.number}`} <span className={`badge ${badgeBackgroud()} rounded-pill align-top`}>{status}</span></h1>
-            <div className="row">
                 <form onSubmit={handleSubmit}>
                     <fieldset disabled={unableToEdit}>
                         { isNew ? dropDown() : null }
                         <div className="mb-3">
                             <label htmlFor="githubUrl" className="form-label">GitHub URL</label>
-                            <input type="text" required={true} className="form-control" id="githubUrl" name="githubUrl" value={pageData.formData.githubUrl} onChange={handleChange}/>
+                            <input type="text" required={true} className="form-control overflow-x-auto" id="githubUrl" name="githubUrl" value={pageData.formData.githubUrl} onChange={handleChange}/>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="branch" className="form-label">Branch</label>
-                            <input type="text" required={true} className="form-control" id="branch" name="branch" value={pageData.formData.branch} onChange={handleChange}/>
+                            <input type="text" required={true} className="form-control overflow-x-auto" id="branch" name="branch" value={pageData.formData.branch} onChange={handleChange}/>
                         </div>
                         { 
                             unableToEdit ? 
@@ -120,14 +125,11 @@ export default function CreateEditAssignment() {
                         }
                     </fieldset>
                 </form>
-            </div>
-            <div className="row justify-content-end">
                 <Link to={"/assignments"} 
-                                        className="btn btn-info mb-3 col-12 col-md-6 col-xl-2 float-end" 
-                                        style={{marginLeft: 10}}>
-                    {"<- Back to Assignments"}
+                                        className="btn btn-info mb-3 col-10 offset-1 col-md-6 offset-md-3 col-xl-2 offset-xl-9 float-md-end" 
+                                        >
+                    <i className="bi bi-arrow-90deg-left me-2"></i>Back to Assignments
                 </Link>
-            </div>
         </>
     );
 }
@@ -141,8 +143,8 @@ const EditButtons = ({deleteAssignment, isNew, currentStatus}) => {
         return currentStatus === "REJECTED" ? "Resubmit" : "Save edits";
     };
     return (
-        <div className="mb-3">
-            <button className="btn btn-primary" type="submit">{mainActionButtonPrompt()}</button>
+        <div className="mb-3 justify-content-center d-flex">
+            <button className="btn btn-primary col-12 col-md-6 col-xl-2" type="submit">{mainActionButtonPrompt()}</button>
             {
                 isNew ? null : <button className="btn btn-danger ms-3" onClick={deleteAssignment}>Delete Assignment</button>
             }

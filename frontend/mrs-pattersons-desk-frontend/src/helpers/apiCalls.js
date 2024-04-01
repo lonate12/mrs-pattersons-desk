@@ -111,6 +111,7 @@ export async function createNewOrUpdateAssignment(token, assignment) {
     const response = await fetch(`${BACKEND_URL}/assignments${endpoint}`, options);
 
     if (response.status !== 200) {
+        response.json().then(result => console.log(result));
         console.log(`Response error: ${response}`);
         throw new Error(`Something went wrong. Status code ${response.status}.`);
     }

@@ -72,20 +72,20 @@ export default function AssignmentDetail() {
                 <div className="assignment-details-container container col-12 col-xl-6">
                     <div className="input-group mb-3">
                         <span className="input-group-text col-4 col-md-3" id="basic-addon1">Github URL</span>
-                        <div type="text" className="form-control" style={{borderTopStyle: "none", borderRightStyle: "none"}}>
+                        <div type="text" className="form-control overflow-x-auto" style={{borderTopStyle: "none", borderRightStyle: "none"}}>
                             <a href={pageData.assignment.githubUrl}>{pageData.assignment.githubUrl}</a>
                         </div>
                     </div>
                     <div className="input-group mb-3">
                         <span className="input-group-text col-4 col-md-3" id="basic-addon1">Branch</span>
-                        <div type="text" className="form-control" style={{borderTopStyle: "none", borderRightStyle: "none"}}>
+                        <div type="text" className="form-control overflow-x-auto" style={{borderTopStyle: "none", borderRightStyle: "none"}}>
                             {pageData.assignment.branch}
                         </div>
                     </div>
                     {["REJECTED", "COMPLETED"].includes(pageData.assignment.status) ? 
                         <div className="input-group mb-3">
                             <span className="input-group-text col-4 col-md-3" id="basic-addon1">Review Video</span>
-                            <div type="text" className="form-control" style={{borderTopStyle: "none", borderRightStyle: "none"}}>
+                            <div type="text" className="form-control overflow-x-auto" style={{borderTopStyle: "none", borderRightStyle: "none"}}>
                                 <a href={pageData.assignment.reviewVideoUrl}>{pageData.assignment.reviewVideoUrl}</a>
                             </div>
                         </div>
@@ -103,7 +103,9 @@ export default function AssignmentDetail() {
 const AssignmentDetailsActionButtons = ({user, assignment, updateStatus, unableToEdit}) => {
     return (
         <>
-            { unableToEdit ? null :  (<Link to={"edit"} className="btn btn-primary mb-3 col-12 col-md-6 col-xl-2" style={{lineHeight: 3}}>Edit</Link>)}
+            { unableToEdit ? null : (
+                <Link to={"edit"} className="btn btn-primary mb-3 col-12 col-md-6 col-xl-2" style={{lineHeight: 3, marginLeft: 10}}>Edit</Link>
+            )}
             {user.isReviewer ? (
                 <>
 

@@ -8,12 +8,12 @@ export default function Home() {
     return (
         <>
             <h1 className="text-center pt-3">Welcome to the assignment review app!</h1>
-            <div className="row justify-content-center mt-5">
+                <div className="container mt-5 justify-content-center d-flex">
                 { user.isAuthenticated ? 
-                    <Link to="assignments" className="btn btn-primary col-3">Go to Assignments</Link> :
-                    <Link to="login" className="btn btn-primary col-3">Login</Link>
+                    <Link to="assignments" className="btn btn-primary col-lg-3 col-12">Go to Assignments</Link> :
+                    <Link to="login" className="btn btn-primary col-lg-3 col-12">Login</Link>
                 }
-            </div>
+                </div>
         </>
     );
 }

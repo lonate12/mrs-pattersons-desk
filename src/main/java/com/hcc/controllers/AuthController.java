@@ -18,7 +18,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(path = "/api/auth")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://mrs-pattersons-desk-front-end.s3-website.us-east-2.amazonaws.com", "http://localhost:5173"})
 public class AuthController {
 
     private final CustomPasswordEncoder passwordEncoder;

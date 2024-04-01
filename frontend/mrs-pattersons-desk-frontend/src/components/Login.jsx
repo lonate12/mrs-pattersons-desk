@@ -38,7 +38,7 @@ export default function Login() {
         <>
             <div className="container-fluid">
                 <div className="row justify-content-center">
-                    <form className="col-6 col-sm-12 login-form">
+                    <form className="col-md-6 login-form">
                         <div className="mb-3">
                             <label htmlFor="username" className="form-label">Email address</label>
                             <input type="email" onChange={handleChange} className="form-control" id="username" name="username" required={true}/>

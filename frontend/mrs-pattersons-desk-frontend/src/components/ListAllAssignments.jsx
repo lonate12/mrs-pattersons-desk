@@ -63,7 +63,7 @@ export default function ListAllAssignments() {
                             </div>
                         </div>   
                         <div className={`assignments-container boarder boarder-primary form-control mt-5 mb-3 position-relative ${user.isReviewer ? "order-3" : ""}`}>
-                            <span className="badge rounded-pill bg-success position-absolute" style={{left: 20, top: -15, fontSize: 20}}>{user.isReviewer ? "Submitted and Resubmitted for review" : "Submitted"}</span>
+                            <span className="badge rounded-pill bg-success position-absolute" style={{left: 20, top: -15, fontSize: 20}}>{user.isReviewer ? "Queued for Review" : "Submitted"}</span>
                             <div className="row">
                                 {"SUBMITTED" in mapOfAssignmentCardLists ? mapOfAssignmentCardLists.SUBMITTED : <h3 className="mt-4">No assignments to view</h3>}
                             </div>

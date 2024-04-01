@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/api/assignments")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+@CrossOrigin(origins = {"http://mrs-pattersons-desk-front-end.s3-website.us-east-2.amazonaws.com", "http://localhost:5173"}, allowCredentials = "true")
 public class AssignmentController {
 
     private AssignmentService assignmentService;

@@ -17,7 +17,7 @@ public class DtoConverter {
                                                  User requestingUser,
                                                  boolean isReviewer) {
         // Fields id, number, user cannot be changed, so we'll ignore those even if then exist on the request
-        System.out.println("Incoming merge request...");
+
 
         // Start with the status. What we do is dependent on whether the requester is a reviewer and the actual status
         // change request

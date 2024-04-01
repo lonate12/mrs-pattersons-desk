@@ -15,4 +15,14 @@ public class UpdateAssignmentRequestDTO {
     private String branch;
     private String status;
     private String reviewVideoUrl;
+
+    @Override
+    public String toString() {
+        return "UpdateAssignmentRequestDTO{" +
+                "githubUrl='" + githubUrl + '\'' +
+                ", branch='" + branch + '\'' +
+                ", status='" + status + '\'' +
+                ", reviewVideoUrl='" + reviewVideoUrl + '\'' +
+                '}';
+    }
 }

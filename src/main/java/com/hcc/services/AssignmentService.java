@@ -72,14 +72,24 @@ public class AssignmentService {
         }
 
         // Merge the loaded assignment
-        Assignment mergedAssignment = DtoConverter.mergeUpdateAssignmentRequest(
-                existingAssignment,
-                updatedAssignment,
-                requestingUser,
-                isReviewer
-        );
+        Assignment mergedAssignment = new Assignment();
+        Assignment savedAssignment = new Assignment();
 
-        return assignmentRepository.save(mergedAssignment);
+        try {
+            mergedAssignment = DtoConverter.mergeUpdateAssignmentRequest(
+                    existingAssignment,
+                    updatedAssignment,
+                    requestingUser,
+                    isReviewer
+            );
+
+            savedAssignment = assignmentRepository.save(mergedAssignment);
+        } catch (Error e) {
+            System.out.println(e.toString());
+        }
+
+
+        return savedAssignment;
     }
 
     public Assignment getAssignmentById(Long assignmentId) {
