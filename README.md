@@ -65,19 +65,13 @@ an entity diagram:
 ![Entity Diagram](./documents/entity-diagram.png)
 *Entity Diagram*
 
-Next, thinking through the use cases, I started to work out some flow diagrams:
+Next, thinking through the use cases, I started to work out some flow diagrams, examples below:
 
 ![Edit Assignment Flow](./documents/flow-diagrams/edit-assignment-flow.png)
 *Edit assignment flow*
 
 ![Get All Unclaimed/Pending Flow](./documents/flow-diagrams/get-all-unclaimed-pending-review-assignments.png)
 *Get all unclaimed/pending assignment flow*
-
-![Get All User Info Flow](./documents/flow-diagrams/get-all-user-info.png)
-*Get all user info flow*
-
-![Get Assignment Detail Flow](./documents/flow-diagrams/get-assignment-detail.png)
-*Get assignment detail flow*
 
 ![Submit Assignment Flow](./documents/flow-diagrams/submit-assignment-flow.png)
 *Submit assignment flow*
@@ -95,27 +89,25 @@ project, I would, likely, receive detailed renderings of what the frontend shoul
 Some examples of the wireframes and screenshots of the end result:
 
 ---
-Authenticated Home Page
-
-| Wireframe | Live |
-|:---------:|:------:|
-|![Learner authenticated home page - wireframe](./documents/images/home_page_authenticated.jpg) | ![Learner authenticated home page - live](./documents/images/home-page-authenticated-live.png)|
+## Authenticated Home Page
 
 ![Learner authenticated home page - wireframe](./documents/images/home_page_authenticated.jpg)
 *Wireframe*
 
 ![Learner authenticated home page - live](./documents/images/home-page-authenticated-live.png)
 *Live*
+
 ---
-Learner Dashboard Page
+## Learner Dashboard Page
 
 ![Learner dashboard - wireframe](./documents/images/learner_dashboard.jpg)
 *Wireframe*
 
 ![Learner dashboard - live](./documents/images/learner-dashboard-live.png)
 *Live*
+
 ---
-Learner Assignment Detail Page
+## Learner Assignment Detail Page
 
 ![Learner assignment detail - wireframe](./documents/images/learner_assignment_view.jpg)
 *Wireframe*
