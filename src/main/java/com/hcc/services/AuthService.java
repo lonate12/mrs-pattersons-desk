@@ -53,7 +53,7 @@ public class AuthService {
 
         Authority authority = null;
 
-        if (request.getUsername().equals("reviewer@gmail.com")) {
+        if (request.getUsername().equals("reviewer@example.com")) {
             authority = new Authority(AuthorityEnum.ROLE_CODE_REVIEWER.toString(), user);
         } else {
             authority = new Authority(AuthorityEnum.ROLE_LEARNER.toString(), user);

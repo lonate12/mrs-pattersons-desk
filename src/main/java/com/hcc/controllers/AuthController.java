@@ -18,7 +18,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(path = "/api/auth")
 @AllArgsConstructor
-@CrossOrigin(origins = {"http://mrs-pattersons-desk-front-end.s3-website.us-east-2.amazonaws.com", "http://localhost:5173"})
+@CrossOrigin(origins = "http://mrs-pattersons-desk-front-end.s3-website.us-east-2.amazonaws.com")
 public class AuthController {
 
     private final CustomPasswordEncoder passwordEncoder;
@@ -30,10 +30,10 @@ public class AuthController {
         return new LoginResponseDto(token);
     }
 
-    @PostMapping(path = "/register")
-    public User createUser(@RequestBody RegisterUserRequestDto body) {
-        return authService.registerUser(body);
-    }
+//    @PostMapping(path = "/register")
+//    public User createUser(@RequestBody RegisterUserRequestDto body) {
+//        return authService.registerUser(body);
+//    }
 
     @PostMapping(path = "/validate")
     public boolean validateToken(@RequestBody ValidateTokenRequest request) {
