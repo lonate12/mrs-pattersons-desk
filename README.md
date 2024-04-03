@@ -1,4 +1,19 @@
 # Learning Management System (LMS) Capstone Project
+**Table of Contents**
+- [Background](#background)
+- [What is it and why?](#what-is-it-and-why)
+- [What I did](#what-i-did)
+- [Technologies used](#technologies-used)
+  - [Frontend](#frontend)
+  - [Backend](#backend)
+- [How did I go about it?](#how-did-i-go-about-it)
+  - [Planning phase](#planning-phase)
+  - [Backend](#backend-1)
+  - [Frontend](#frontend-1)
+  - [Deployment](#deployment)
+- [Reflection](#reflection)
+- [Roadmap](#improvements-roadmap)
+
 
 # Background
 In June 2023 I decided to upskill myself by going through the
