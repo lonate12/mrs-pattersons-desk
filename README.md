@@ -114,6 +114,7 @@ Some examples of the wireframes and screenshots of the end result:
 
 ![Learner assignment detail - live](./documents/images/learner-assignment-view-live.png)
 *Live*
+
 ---
 
 ### Deployment
