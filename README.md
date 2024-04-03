@@ -97,6 +97,10 @@ Some examples of the wireframes and screenshots of the end result:
 ---
 Authenticated Home Page
 
+| Wireframe | Live |
+|:---------:|:------:|
+|![Learner authenticated home page - wireframe](./documents/images/home_page_authenticated.jpg) | ![Learner authenticated home page - live](./documents/images/home-page-authenticated-live.png)|
+
 ![Learner authenticated home page - wireframe](./documents/images/home_page_authenticated.jpg)
 *Wireframe*
 
